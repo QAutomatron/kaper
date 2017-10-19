@@ -1,0 +1,5 @@
+.gradle
+.allure
+.idea
+build/
+gradle.properties

@@ -1,0 +1,115 @@
+buildscript {
+
+    ext
+            {
+                kotlin_version = '1.1.51'
+                threads = project.hasProperty('threads') ? project.getProperty('threads').toInteger() : 1
+            }
+
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
+group 'com.qautomatron'
+version '0.0.6'
+
+apply plugin: 'kotlin'
+apply plugin: 'maven-publish'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile group: 'io.appium', name: 'java-client', version: '5.0.4'
+    compile 'io.github.microutils:kotlin-logging:1.4.6'
+    compile group: 'org.aeonbits.owner', name: 'owner', version: '1.0.9'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
+    compile group: 'org.testng', name: 'testng', version: '6.11'
+}
+
+bintray {
+    user = BINTRAY_USER
+    key = BINTRAY_KEY
+    publications = ['mavenJava']
+
+    pkg {
+
+        repo = 'kaper'
+        name = 'kaper'
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/QAutomatron/kaper.git'
+
+        version {
+            name = project.version
+            released = new Date()
+            vcsTag = "v${project.version}"
+        }
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: project.classes) {
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: project.javadoc) {
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId project.bintray.pkg.name
+            from components.java
+
+            artifact sourcesJar {
+                classifier = 'sources'
+            }
+            artifact javadocJar {
+                classifier = 'javadoc'
+            }
+        }
+    }
+}
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+test {
+    useTestNG() {
+        listeners.add('com.qautomatron.kaper.core.listener.KListener')
+    }
+    maxParallelForks = threads
+    forkEvery = 1
+
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat "full"
+    }
+
+    systemProperty "threads", threads
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.2.1'
+}

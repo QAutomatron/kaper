@@ -1,0 +1,5 @@
+<aspectj>
+    <aspects>
+        <aspect name="com.qautomatron.kaper.core.listener.StepLogger"/>
+    </aspects>
+</aspectj>
