@@ -97,19 +97,22 @@ compileTestKotlin {
 
 test {
     useTestNG() {
+
         listeners.add('com.qautomatron.kaper.core.listener.KListener')
+
+        options {
+            parallel = 'classes' //modes: methods, tests, classes or instances.
+            threadCount = threads
+        }
+
     }
-    maxParallelForks = threads
-    forkEvery = 1
 
     testLogging {
         showStandardStreams = true
         exceptionFormat "full"
     }
-
-    systemProperty "threads", threads
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.2.1'
+    gradleVersion = '4.3'
 }

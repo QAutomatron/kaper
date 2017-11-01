@@ -4,6 +4,8 @@ import com.qautomatron.kaper.core.common.config
 import io.appium.java_client.AppiumDriver
 import io.appium.java_client.MobileElement
 import io.appium.java_client.remote.MobileCapabilityType
+import mu.KLogging
+import mu.KotlinLogging
 import org.openqa.selenium.Capabilities
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.remote.DesiredCapabilities
@@ -76,12 +78,14 @@ class DriverManager {
 }
 
 val driverManager = DriverManager()
+private val logger = KotlinLogging.logger {}
 
 fun getDriver(): AppiumDriver<MobileElement> {
     return driverManager.getDriver()
 }
 
 fun closeSession() {
+    logger.debug {"Will close debug session for thread ${Thread.currentThread().id}"}
     return driverManager.quitDriver()
 }
 
