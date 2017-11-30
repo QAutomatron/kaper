@@ -35,7 +35,7 @@ repositories {
 2. Add dependency:
 ```groovy
 dependencies {
-    compile 'com.qautomatron:kaper:0.0.6'
+    compile 'com.qautomatron:kaper:0.0.7'
 }
 ``` 
 
