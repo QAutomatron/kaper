@@ -3,11 +3,13 @@ package com.qautomatron.kaper.core.driver
 import com.qautomatron.kaper.core.common.config
 import io.appium.java_client.AppiumDriver
 import io.appium.java_client.MobileElement
+import io.appium.java_client.android.AndroidDriver
+import io.appium.java_client.ios.IOSDriver
 import io.appium.java_client.remote.MobileCapabilityType
-import mu.KLogging
 import mu.KotlinLogging
 import org.openqa.selenium.Capabilities
 import org.openqa.selenium.OutputType
+import org.openqa.selenium.Platform
 import org.openqa.selenium.remote.DesiredCapabilities
 import java.net.URL
 import java.util.concurrent.ConcurrentHashMap
@@ -17,7 +19,7 @@ class DriverManager {
     private val container: MutableMap<Long, AppiumDriver<MobileElement>> = ConcurrentHashMap(4)
 
     private fun setDriver(webDriver: AppiumDriver<MobileElement>): AppiumDriver<MobileElement> {
-        container.put(Thread.currentThread().id, webDriver)
+        container[Thread.currentThread().id] = webDriver
         return webDriver
     }
 
@@ -42,7 +44,14 @@ class DriverManager {
 
     private fun createAppiumDriver(): AppiumDriver<MobileElement> {
         val appiumHub = config.hub()
-        return AppiumDriver(URL(appiumHub), getCapabilities())
+        val capabilities = getCapabilities()
+        return when (capabilities.platform) {
+            Platform.ANDROID -> AndroidDriver(URL(appiumHub), capabilities)
+            Platform.IOS -> IOSDriver(URL(appiumHub), capabilities)
+            else -> {
+                AppiumDriver(URL(appiumHub), capabilities)
+            }
+        }
     }
 
     private fun getCapabilities() : Capabilities {
