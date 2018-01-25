@@ -34,6 +34,9 @@ interface Configuration : Config {
     @Key("appium.fullReset")
     fun fullReset(): Boolean?
 
+    @Key("appium.noSign")
+    fun noSign(): Boolean?
+
     @Key("appium.implicitlyWait")
     @DefaultValue("0")
     fun implicitlyWait(): Int

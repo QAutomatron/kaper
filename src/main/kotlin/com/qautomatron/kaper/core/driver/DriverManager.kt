@@ -67,6 +67,7 @@ class DriverManager {
         val fullReset = config.fullReset()
         val xcodeSigningId = config.xcodeSigningId()
         val xcodeOrgId = config.xcodeOrgId()
+        val noSign = config.noSign()
 
         val capabilities = DesiredCapabilities()
         if (!deviceName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName)
@@ -82,6 +83,7 @@ class DriverManager {
         if (!xcodeSigningId.isNullOrEmpty()) capabilities.setCapability("xcodeSigningId", xcodeSigningId)
         if (!xcodeOrgId.isNullOrEmpty()) capabilities.setCapability("xcodeOrgId", xcodeOrgId)
         if (!appWaitActivity.isNullOrEmpty()) capabilities.setCapability("appWaitActivity", appWaitActivity)
+        if (noSign != null && noSign) capabilities.setCapability("noSign", noSign)
         return capabilities
     }
 }
