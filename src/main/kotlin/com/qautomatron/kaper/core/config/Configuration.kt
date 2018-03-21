@@ -6,14 +6,13 @@ import org.aeonbits.owner.Config.*
 @Sources("file:kaper.properties")
 interface Configuration : Config {
 
-    @Key("appium.hub")
-    @DefaultValue("http://127.0.0.1:4723/wd/hub")
-    fun hub(): String
+    @Key("driver.hub")
+    fun hub(): String?
 
     @Key("appium.app")
     fun app(): String?
 
-    @Key("appium.platformName")
+    @Key("driver.platformName")
     fun platformName(): String?
 
     @Key("appium.platform")
@@ -22,7 +21,7 @@ interface Configuration : Config {
     @Key("appium.deviceName")
     fun deviceName(): String?
 
-    @Key("appium.browserName")
+    @Key("driver.browserName")
     fun browserName(): String?
 
     @Key("appium.platformVersion")
@@ -37,7 +36,7 @@ interface Configuration : Config {
     @Key("appium.noSign")
     fun noSign(): Boolean?
 
-    @Key("appium.implicitlyWait")
+    @Key("driver.implicitlyWait")
     @DefaultValue("0")
     fun implicitlyWait(): Int
 
@@ -65,7 +64,7 @@ interface Configuration : Config {
     @Key("appium.xcodeSigningId")
     fun xcodeSigningId(): String?
 
-    @Key("appium.polling")
+    @Key("driver.polling")
     @DefaultValue("500")
     fun  polling(): Long
 }
