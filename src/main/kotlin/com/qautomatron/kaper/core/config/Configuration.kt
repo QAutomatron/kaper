@@ -66,5 +66,5 @@ interface Configuration : Config {
 
     @Key("driver.polling")
     @DefaultValue("500")
-    fun  polling(): Long
+    fun polling(): Long
 }

@@ -2,34 +2,33 @@ package com.qautomatron.kaper.core.element
 
 import com.qautomatron.kaper.core.common.defaultWait
 import com.qautomatron.kaper.core.visibility.visible
-import io.appium.java_client.MobileElement
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
-class MElement(locator: ElementLocator<WebElement>,
+class KElement(locator: ElementLocator<WebElement>,
                driver: WebDriver) : Element<WebElement>(locator, driver) {
 
     constructor(locator: By, driver: WebDriver) :
-            this(MElementLocator(locator, driver), driver)
+            this(KElementLocator(locator, driver), driver)
 
-    val mElement: MobileElement
-        get() = locator.find() as MobileElement
+    val wElement: WebElement
+        get() = locator.find()
 
     val text: String
-        get() = mElement.text
+        get() = wElement.text
 
     val tagName: String
-        get() = mElement.tagName
+        get() = wElement.tagName
 
     val isEnabled: Boolean
-        get() = mElement.isEnabled
+        get() = wElement.isEnabled
 
     val isDisplayed: Boolean
-        get() = mElement.isDisplayed
+        get() = wElement.isDisplayed
 
     val isSelected: Boolean
-        get() = mElement.isSelected
+        get() = wElement.isSelected
 
     fun click() {
         execute { click() }
@@ -43,13 +42,14 @@ class MElement(locator: ElementLocator<WebElement>,
         execute { sendKeys(*keysToSend) }
     }
 
+    // Mobile Only TODO move this
     fun setValue(value: String) {
         execute { setValue(value) }
     }
 
-    private fun execute(commands: MobileElement.() -> Unit): MElement {
+    private fun execute(commands: WebElement.() -> Unit): KElement {
         super.waitFor(visible, defaultWait)
-        mElement.commands()
+        wElement.commands()
         return this
     }
 
@@ -57,9 +57,9 @@ class MElement(locator: ElementLocator<WebElement>,
         return locator.description
     }
 
-    fun element(by: By): MElement {
-        return MElement(InnerMElementLocator(by, this), driver)
+    fun element(by: By): KElement {
+        return KElement(InnerKElementLocator(by, this), driver)
     }
 
-    fun getAttribute(s: String): String = mElement.getAttribute(s)
+    fun getAttribute(s: String): String = wElement.getAttribute(s)
 }

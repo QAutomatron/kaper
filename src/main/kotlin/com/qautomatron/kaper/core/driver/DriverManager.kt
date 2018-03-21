@@ -10,25 +10,37 @@ import mu.KotlinLogging
 import org.openqa.selenium.Capabilities
 import org.openqa.selenium.OutputType
 import org.openqa.selenium.Platform
+import org.openqa.selenium.WebDriver
+import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeOptions
+import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxOptions
+import org.openqa.selenium.remote.BrowserType
+import org.openqa.selenium.remote.CapabilityType
 import org.openqa.selenium.remote.DesiredCapabilities
+import org.openqa.selenium.remote.RemoteWebDriver
 import java.net.URL
 import java.util.concurrent.ConcurrentHashMap
 
 class DriverManager {
 
-    private val container: MutableMap<Long, AppiumDriver<MobileElement>> = ConcurrentHashMap(4)
+    private val container: MutableMap<Long, WebDriver> = ConcurrentHashMap(4)
 
-    private fun setDriver(webDriver: AppiumDriver<MobileElement>): AppiumDriver<MobileElement> {
+    private fun setDriver(webDriver: WebDriver): WebDriver {
         container[Thread.currentThread().id] = webDriver
         return webDriver
     }
 
-    fun getDriver(): AppiumDriver<MobileElement> {
+    fun getDriver(): WebDriver {
         val driver = container[Thread.currentThread().id]
         if (driver != null) {
             return driver
         }
-        val newDriver = createAppiumDriver()
+        val capabilities = getCapabilities()
+        val newDriver = if (capabilities.platform != Platform.IOS || capabilities.platform != Platform.ANDROID) {
+            createWebDriver(capabilities)
+        }
+        else createAppiumDriver(capabilities)
         newDriver.autoClose()
         return setDriver(newDriver)
     }
@@ -42,9 +54,28 @@ class DriverManager {
         return container[Thread.currentThread().id] != null
     }
 
-    private fun createAppiumDriver(): AppiumDriver<MobileElement> {
+    private fun createWebDriver(capabilities: Capabilities): WebDriver {
+        val grid = config.hub()
+        if (!config.hub().isNullOrEmpty()) return RemoteWebDriver(URL(grid), capabilities)
+        else return when (capabilities.browserName) {
+            BrowserType.CHROME -> {
+                val chromeOptions = ChromeOptions()
+                chromeOptions.merge(capabilities)
+                ChromeDriver(chromeOptions)
+            }
+            BrowserType.FIREFOX -> {
+                val firefoxOptions = FirefoxOptions()
+                firefoxOptions.merge(capabilities)
+                FirefoxDriver(firefoxOptions)
+            }
+            else -> {
+                throw Error("BrowserType is not set")
+            }
+        }
+    }
+
+    private fun createAppiumDriver(capabilities: Capabilities): AppiumDriver<MobileElement> {
         val appiumHub = config.hub()
-        val capabilities = getCapabilities()
         return when (capabilities.platform) {
             Platform.ANDROID -> AndroidDriver(URL(appiumHub), capabilities)
             Platform.IOS -> IOSDriver(URL(appiumHub), capabilities)
@@ -70,12 +101,15 @@ class DriverManager {
         val noSign = config.noSign()
 
         val capabilities = DesiredCapabilities()
+        // General Caps
+        if (!browserName.isNullOrEmpty()) capabilities.setCapability(CapabilityType.BROWSER_NAME, browserName)
+        if (!platformName.isNullOrEmpty()) capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName)
+        if (!version.isNullOrEmpty()) capabilities.setCapability(CapabilityType.VERSION, version)
+        if (!platform.isNullOrEmpty()) capabilities.setCapability(CapabilityType.PLATFORM, platform)
+
+        // Mobile Caps
         if (!deviceName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName)
         if (!platformVersion.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion)
-        if (!version.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.VERSION, version)
-        if (!platform.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.PLATFORM, platform)
-        if (!platformName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, platformName)
-        if (!browserName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, browserName)
         if (!app.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.APP, app)
         if (!automationName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, automationName)
         if (fullReset != null && fullReset) capabilities.setCapability(MobileCapabilityType.FULL_RESET, fullReset)
@@ -91,12 +125,12 @@ class DriverManager {
 val driverManager = DriverManager()
 private val logger = KotlinLogging.logger {}
 
-fun getDriver(): AppiumDriver<MobileElement> {
+fun getDriver(): WebDriver {
     return driverManager.getDriver()
 }
 
 fun closeSession() {
-    logger.debug {"Will close debug session for thread ${Thread.currentThread().id}"}
+    logger.debug {"Will close session for thread ${Thread.currentThread().id}"}
     return driverManager.quitDriver()
 }
 
@@ -105,5 +139,5 @@ fun isDriverExist(): Boolean {
 }
 
 fun getScreenshot(): ByteArray {
-    return getDriver().getScreenshotAs(OutputType.BYTES)
+    return (getDriver() as RemoteWebDriver).getScreenshotAs(OutputType.BYTES)
 }
