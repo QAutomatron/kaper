@@ -3,7 +3,8 @@ package com.qautomatron.kaper.core.config
 import org.aeonbits.owner.Config
 import org.aeonbits.owner.Config.*
 
-@Sources("file:kaper.properties")
+@Sources("file:\${config.file}.properties",
+        "file:kaper.properties")
 interface Configuration : Config {
 
     @Key("driver.hub")

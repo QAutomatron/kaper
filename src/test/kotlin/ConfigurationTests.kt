@@ -1,8 +1,9 @@
 
-import org.testng.annotations.Test
 import assertk.assert
-import assertk.assertions.*
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import com.qautomatron.kaper.core.common.config
+import org.testng.annotations.Test
 
 class ConfigurationTests {
 
