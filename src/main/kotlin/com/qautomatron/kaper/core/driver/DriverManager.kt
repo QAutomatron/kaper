@@ -31,6 +31,9 @@ class DriverManager {
         return webDriver
     }
 
+    /**
+     * Return existed driver or create a new one
+     */
     fun getDriver(): WebDriver {
         val driver = container[Thread.currentThread().id]
         if (driver != null) {
@@ -54,6 +57,9 @@ class DriverManager {
         return container[Thread.currentThread().id] != null
     }
 
+    /**
+     * Will create WebDriver based on browser type or Remote if grid is specified
+     */
     private fun createWebDriver(capabilities: Capabilities): WebDriver {
         val grid = config.hub()
         if (!config.hub().isNullOrEmpty()) return RemoteWebDriver(URL(grid), capabilities)
@@ -74,6 +80,9 @@ class DriverManager {
         }
     }
 
+    /**
+     * Will create Appium driver for specified platform
+     */
     private fun createAppiumDriver(capabilities: Capabilities): AppiumDriver<MobileElement> {
         val appiumHub = config.hub()
         return when (capabilities.platform) {
@@ -85,6 +94,9 @@ class DriverManager {
         }
     }
 
+    /**
+     * Load capabilities from config
+     */
     private fun getCapabilities() : Capabilities {
         val deviceName = config.deviceName()
         val platform = config.platform()
