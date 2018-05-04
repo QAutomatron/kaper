@@ -2,7 +2,7 @@ buildscript {
 
     ext
             {
-                kotlin_version = '1.2.31'
+                kotlin_version = '1.2.41'
                 threads = project.hasProperty('threads') ? project.getProperty('threads').toInteger() : 1
             }
 
@@ -33,13 +33,13 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    compile group: 'io.appium', name: 'java-client', version: '6.0.0-BETA4'
+    compile group: 'io.appium', name: 'java-client', version: '6.0.0-BETA5'
     compile "org.seleniumhq.selenium:selenium-java:3.11.0"
-    compile 'io.github.microutils:kotlin-logging:1.4.6'
+    compile 'io.github.microutils:kotlin-logging:1.5.4'
     compile group: 'org.aeonbits.owner', name: 'owner', version: '1.0.10'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
-    compile group: 'org.testng', name: 'testng', version: '6.11'
-    testCompile 'com.willowtreeapps.assertk:assertk:0.9'
+    compile group: 'org.testng', name: 'testng', version: '6.14.3'
+    testCompile 'com.willowtreeapps.assertk:assertk:0.10'
 }
 
 bintray {
