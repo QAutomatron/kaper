@@ -40,10 +40,9 @@ class DriverManager {
             return driver
         }
         val capabilities = getCapabilities()
-        val newDriver = if (capabilities.platform != Platform.IOS || capabilities.platform != Platform.ANDROID) {
+        val newDriver = if (!arrayOf(Platform.IOS, Platform.ANDROID).contains(capabilities.platform)) {
             createWebDriver(capabilities)
-        }
-        else createAppiumDriver(capabilities)
+        } else createAppiumDriver(capabilities)
         newDriver.autoClose()
         return setDriver(newDriver)
     }
@@ -97,7 +96,7 @@ class DriverManager {
     /**
      * Load capabilities from config
      */
-    private fun getCapabilities() : Capabilities {
+    private fun getCapabilities(): Capabilities {
         val deviceName = config.deviceName()
         val platform = config.platform()
         val version = config.version()
@@ -142,7 +141,7 @@ fun getDriver(): WebDriver {
 }
 
 fun closeSession() {
-    logger.debug {"Will close session for thread ${Thread.currentThread().id}"}
+    logger.debug { "Will close session for thread ${Thread.currentThread().id}" }
     return driverManager.quitDriver()
 }
 
