@@ -4,6 +4,7 @@ import com.qautomatron.kaper.core.driver.getDriver
 import com.qautomatron.kaper.core.driver.resetImplicitTimeout
 import com.qautomatron.kaper.core.element.KElement
 import com.qautomatron.kaper.core.element.KElements
+import com.qautomatron.kaper.core.element.MElement
 import org.openqa.selenium.By
 import org.openqa.selenium.NoAlertPresentException
 import org.openqa.selenium.WebDriver
@@ -60,10 +61,9 @@ abstract class Steps(val driver: WebDriver = getDriver()) {
 
     fun getAlertText(): String = driver.switchTo().alert().text
 
-    @Deprecated("use kEl instead")
-    protected fun mEl(locator: By) = KElement(locator, driver)
+    protected fun mEl(locator: By) = MElement(locator, driver)
 
-    @Deprecated("use kEls instead")
+    @Deprecated("use kEls instead", ReplaceWith("KElements(locator, driver)", "com.qautomatron.kaper.core.element.KElements"))
     protected fun mEls(locator: By) = KElements(locator, driver)
 
     protected fun kEl(locator: By) = KElement(locator, driver)

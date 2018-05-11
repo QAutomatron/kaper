@@ -6,8 +6,8 @@ import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
-class KElement(locator: ElementLocator<WebElement>,
-               driver: WebDriver) : Element<WebElement>(locator, driver) {
+open class KElement(locator: ElementLocator<WebElement>,
+                    driver: WebDriver) : Element<WebElement>(locator, driver) {
 
     constructor(locator: By, driver: WebDriver) :
             this(KElementLocator(locator, driver), driver)
@@ -42,12 +42,7 @@ class KElement(locator: ElementLocator<WebElement>,
         execute { sendKeys(*keysToSend) }
     }
 
-    // Mobile Only TODO move this
-    fun setValue(value: String) {
-        execute { setValue(value) }
-    }
-
-    private fun execute(commands: WebElement.() -> Unit): KElement {
+    internal fun execute(commands: WebElement.() -> Unit): KElement {
         super.waitFor(visible, defaultWait)
         wElement.commands()
         return this
