@@ -21,7 +21,7 @@ plugins {
 }
 
 group = 'com.qautomatron'
-version = '0.0.12'
+version = '0.0.13'
 
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
