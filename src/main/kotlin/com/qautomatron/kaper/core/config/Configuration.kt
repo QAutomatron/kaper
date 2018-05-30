@@ -34,6 +34,9 @@ interface Configuration : Config {
     @Key("appium.fullReset")
     fun fullReset(): Boolean?
 
+    @Key("appium.noReset")
+    fun noReset(): Boolean?
+
     @Key("appium.noSign")
     fun noSign(): Boolean?
 
@@ -64,6 +67,12 @@ interface Configuration : Config {
 
     @Key("appium.xcodeSigningId")
     fun xcodeSigningId(): String?
+
+    @Key("appium.bundleId")
+    fun bundleId(): String?
+
+    @Key("appium.updatedWDABundleId")
+    fun updatedWDABundleId(): String?
 
     @Key("driver.polling")
     @DefaultValue("500")

@@ -39,10 +39,10 @@ class DriverManager {
         if (driver != null) {
             return driver
         }
-        val capabilities = getCapabilities()
-        val newDriver = if (!arrayOf(Platform.IOS, Platform.ANDROID).contains(capabilities.platform)) {
-            createWebDriver(capabilities)
-        } else createAppiumDriver(capabilities)
+        val commonCapabilities = getCommonCapabilities()
+        val newDriver = if (!arrayOf(Platform.IOS, Platform.ANDROID).contains(commonCapabilities.platform)) {
+            createWebDriver(commonCapabilities)
+        } else createAppiumDriver(commonCapabilities.merge(getMobileCapabilities()))
         newDriver.autoClose()
         return setDriver(newDriver)
     }
@@ -61,8 +61,8 @@ class DriverManager {
      */
     private fun createWebDriver(capabilities: Capabilities): WebDriver {
         val grid = config.hub()
-        if (!config.hub().isNullOrEmpty()) return RemoteWebDriver(URL(grid), capabilities)
-        else return when (capabilities.browserName) {
+        return if (!config.hub().isNullOrEmpty()) RemoteWebDriver(URL(grid), capabilities)
+        else when (capabilities.browserName) {
             BrowserType.CHROME -> {
                 val chromeOptions = ChromeOptions()
                 chromeOptions.merge(capabilities)
@@ -73,9 +73,7 @@ class DriverManager {
                 firefoxOptions.merge(capabilities)
                 FirefoxDriver(firefoxOptions)
             }
-            else -> {
-                throw Error("BrowserType is not set")
-            }
+            else -> throw Error("BrowserType is not set")
         }
     }
 
@@ -85,38 +83,40 @@ class DriverManager {
     private fun createAppiumDriver(capabilities: Capabilities): AppiumDriver<MobileElement> {
         val appiumHub = config.hub()
         return when (capabilities.platform) {
-            Platform.ANDROID -> AndroidDriver(URL(appiumHub), capabilities)
-            Platform.IOS -> IOSDriver(URL(appiumHub), capabilities)
-            else -> {
-                AppiumDriver(URL(appiumHub), capabilities)
-            }
+            Platform.ANDROID -> AndroidDriver(URL(appiumHub), capabilities.merge(getAndroidCapabilities()))
+            Platform.IOS -> IOSDriver(URL(appiumHub), capabilities.merge(getIOSCapabilities()))
+            else -> throw Error("Mobile Platform is not set")
         }
     }
 
     /**
      * Load capabilities from config
      */
-    private fun getCapabilities(): Capabilities {
-        val deviceName = config.deviceName()
+    private fun getCommonCapabilities(): Capabilities {
         val platform = config.platform()
         val version = config.version()
-        val platformVersion = config.platformVersion()
         val platformName = config.platformName()
         val browserName = config.browserName()
-        val app = config.app()
-        val automationName = config.automationName()
-        val appWaitActivity = config.appWaitActivity()
-        val fullReset = config.fullReset()
-        val xcodeSigningId = config.xcodeSigningId()
-        val xcodeOrgId = config.xcodeOrgId()
-        val noSign = config.noSign()
 
         val capabilities = DesiredCapabilities()
+
         // General Caps
         if (!browserName.isNullOrEmpty()) capabilities.setCapability(CapabilityType.BROWSER_NAME, browserName)
         if (!platformName.isNullOrEmpty()) capabilities.setCapability(CapabilityType.PLATFORM_NAME, platformName)
         if (!version.isNullOrEmpty()) capabilities.setCapability(CapabilityType.VERSION, version)
         if (!platform.isNullOrEmpty()) capabilities.setCapability(CapabilityType.PLATFORM, platform)
+
+        return capabilities
+    }
+
+    private fun getMobileCapabilities(): Capabilities {
+        val deviceName = config.deviceName()
+        val platformVersion = config.platformVersion()
+        val app = config.app()
+        val automationName = config.automationName()
+        val fullReset = config.fullReset()
+        val noReset = config.noReset()
+        val capabilities = DesiredCapabilities()
 
         // Mobile Caps
         if (!deviceName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, deviceName)
@@ -124,11 +124,34 @@ class DriverManager {
         if (!app.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.APP, app)
         if (!automationName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, automationName)
         if (fullReset != null) capabilities.setCapability(MobileCapabilityType.FULL_RESET, fullReset)
+        if (noReset != null) capabilities.setCapability(MobileCapabilityType.NO_RESET, noReset)
+
+        return capabilities
+    }
+
+    private fun getIOSCapabilities(): DesiredCapabilities {
+        val xcodeSigningId = config.xcodeSigningId()
+        val xcodeOrgId = config.xcodeOrgId()
+        val updatedWDABundleId = config.updatedWDABundleId()
+        val bundleId = config.bundleId()
+        val capabilities = DesiredCapabilities()
 
         if (!xcodeSigningId.isNullOrEmpty()) capabilities.setCapability("xcodeSigningId", xcodeSigningId)
         if (!xcodeOrgId.isNullOrEmpty()) capabilities.setCapability("xcodeOrgId", xcodeOrgId)
+        if (!updatedWDABundleId.isNullOrEmpty()) capabilities.setCapability("updatedWDABundleId", updatedWDABundleId)
+        if (!bundleId.isNullOrEmpty()) capabilities.setCapability("bundleId", bundleId)
+
+        return capabilities
+    }
+
+    private fun getAndroidCapabilities(): DesiredCapabilities {
+        val appWaitActivity = config.appWaitActivity()
+        val noSign = config.noSign()
+        val capabilities = DesiredCapabilities()
+
         if (!appWaitActivity.isNullOrEmpty()) capabilities.setCapability("appWaitActivity", appWaitActivity)
         if (noSign != null) capabilities.setCapability("noSign", noSign)
+
         return capabilities
     }
 }
