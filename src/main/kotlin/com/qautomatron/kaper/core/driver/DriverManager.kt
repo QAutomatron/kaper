@@ -123,12 +123,12 @@ class DriverManager {
         if (!platformVersion.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, platformVersion)
         if (!app.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.APP, app)
         if (!automationName.isNullOrEmpty()) capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, automationName)
-        if (fullReset != null && fullReset) capabilities.setCapability(MobileCapabilityType.FULL_RESET, fullReset)
+        if (fullReset != null) capabilities.setCapability(MobileCapabilityType.FULL_RESET, fullReset)
 
         if (!xcodeSigningId.isNullOrEmpty()) capabilities.setCapability("xcodeSigningId", xcodeSigningId)
         if (!xcodeOrgId.isNullOrEmpty()) capabilities.setCapability("xcodeOrgId", xcodeOrgId)
         if (!appWaitActivity.isNullOrEmpty()) capabilities.setCapability("appWaitActivity", appWaitActivity)
-        if (noSign != null && noSign) capabilities.setCapability("noSign", noSign)
+        if (noSign != null) capabilities.setCapability("noSign", noSign)
         return capabilities
     }
 }
