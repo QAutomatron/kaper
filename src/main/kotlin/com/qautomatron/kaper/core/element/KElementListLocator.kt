@@ -1,12 +1,12 @@
 package com.qautomatron.kaper.core.element
 
-import io.appium.java_client.MobileElement
 import org.openqa.selenium.By
 import org.openqa.selenium.WebDriver
+import org.openqa.selenium.WebElement
 
-class MElementListLocator(override val by: By, private val driver: WebDriver) : ElementLocator<List<MobileElement>> {
+class KElementListLocator(override val by: By, private val driver: WebDriver) : ElementLocator<List<WebElement>> {
 
-    override fun find(): List<MobileElement> {
+    override fun find(): List<WebElement> {
         return driver.findElements(by)
     }
 

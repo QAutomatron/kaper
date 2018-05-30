@@ -3,3 +3,6 @@
 .idea
 build/
 gradle.properties
+.iml
+out/
+*.iml

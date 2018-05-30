@@ -1,6 +1,6 @@
 # Kaper
 
-Test automation framework for Appium written in Kotlin
+Test automation framework for Selenium/Appium written in Kotlin
 
 ## Basics
 
@@ -10,9 +10,9 @@ All step classes should be inherited from `Step()`
 
 All steps in test should be init `by lazy {}`: `private val mySteps by lazy { MySteps() }`
 
-First call to any step in test will invoke `AppiumDriver` creation. One Driver per thread
+First call to any step in test will invoke `WebDriver` or `AppiumDriver` creation. One Driver per thread
 
-Every element in steps should be wrapped in `mEl(By)`
+Every element in steps should be wrapped in `kEl(By)`
 
 Could use TestNG listener `KListener`
 
@@ -35,7 +35,7 @@ repositories {
 2. Add dependency:
 ```groovy
 dependencies {
-    compile 'com.qautomatron:kaper:0.0.7'
+    compile 'com.qautomatron:kaper:0.0.10'
 }
 ``` 
 
@@ -44,8 +44,8 @@ dependencies {
 1. Create step classes inherited from `Steps()`
 2. Add some elements to you new step class:
 ```kotlin
-    private val btnYes = mEl(ai("Yes")) // ai is alias for AccessibilityId
-    private val popup = mEl(ai("SomePopup"))
+    private val btnYes = kEl(ai("Yes")) // ai is alias for AccessibilityId
+    private val popup = kEl(ai("SomePopup"))
 ```
 3. Add some methods to interact with elements:
 ```kotlin
