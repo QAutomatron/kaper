@@ -2,7 +2,7 @@ buildscript {
 
     ext
             {
-                kotlin_version = '1.2.41'
+                kotlin_version = '1.2.50'
                 threads = project.hasProperty('threads') ? project.getProperty('threads').toInteger() : 1
             }
 
@@ -21,7 +21,7 @@ plugins {
 }
 
 group = 'com.qautomatron'
-version = '0.0.15'
+version = '0.0.16'
 
 apply plugin: 'kotlin'
 apply plugin: 'maven-publish'
@@ -33,7 +33,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-    compile group: 'io.appium', name: 'java-client', version: '6.0.0'
+    compile group: 'io.appium', name: 'java-client', version: '6.1.0'
     compile 'io.github.microutils:kotlin-logging:1.5.4'
     compile group: 'org.aeonbits.owner', name: 'owner', version: '1.0.10'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.25'
@@ -112,8 +112,4 @@ test {
         showStandardStreams = true
         exceptionFormat "full"
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.6'
 }
