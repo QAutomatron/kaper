@@ -1,0 +1,14 @@
+language: java
+sudo: required
+
+services:
+  - docker
+
+jdk:
+  - oraclejdk8
+
+before_install:
+  - docker run -d -p 4444:4444 --shm-size=2g selenium/standalone-chrome:3.12.0-cobalt
+  - docker ps -a
+
+
