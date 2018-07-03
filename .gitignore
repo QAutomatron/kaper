@@ -2,7 +2,6 @@
 .allure
 .idea
 build/
-gradle.properties
 .iml
 out/
 target/
