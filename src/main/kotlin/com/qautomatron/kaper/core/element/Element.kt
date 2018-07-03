@@ -6,15 +6,12 @@ import com.qautomatron.kaper.core.driver.resetImplicitTimeout
 import com.qautomatron.kaper.core.driver.setImplicitTimeout
 import com.qautomatron.kaper.core.visibility.*
 import com.qautomatron.kaper.core.visibility.Condition.*
-import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.TimeoutException
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.support.ui.WebDriverWait
 
 abstract class Element<out T>(protected val locator: ElementLocator<T>,
                               protected val driver: WebDriver) {
-
-    private val js = driver as JavascriptExecutor
 
     @JvmOverloads
     fun waitFor(condition: Condition, timeout: Int = defaultWait): Boolean {
@@ -50,24 +47,4 @@ abstract class Element<out T>(protected val locator: ElementLocator<T>,
 
     @JvmOverloads
     fun waitForAbsence(timeout: Int = defaultWait): Boolean = waitFor(absence, timeout)
-
-    /**
-     * Scroll in element to child by it accessibility id
-     */
-//    fun scrollTo(ai: String) {
-//        val params = hashMapOf(
-//                "element" to driver.findElement<MobileElement>(locator.by).id,
-//                "name" to ai)
-//        js.executeScript("mobile: scroll", params)
-//    }
-
-    /**
-     * Swipe on element in specific direction
-     */
-//    fun swipe(direction: Direction) {
-//        val params = hashMapOf(
-//                "element" to driver.findElement<MobileElement>(locator.by).id,
-//                "direction" to direction.name.toLowerCase())
-//        js.executeScript("mobile: swipe", params)
-//    }
 }
