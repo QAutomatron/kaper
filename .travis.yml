@@ -10,6 +10,6 @@ jdk:
 before_install:
   - docker run -d -p 4444:4444 --shm-size=2g selenium/standalone-chrome:3.12.0-cobalt
   - docker ps -a
-  - kaper.properties.example kaper.properties
+  - mv kaper.properties.example kaper.properties
 
 
