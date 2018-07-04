@@ -19,7 +19,7 @@ class ConfigurationTests {
 
     @Test
     fun testStringValue() {
-        assert(config.platformName()).isEqualTo("platformName")
+        assert(config.browserName()).isEqualTo("chrome")
     }
 
     @Test

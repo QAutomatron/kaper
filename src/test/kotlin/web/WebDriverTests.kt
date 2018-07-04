@@ -7,16 +7,17 @@ import web.steps.IndexPageSteps
 
 class WebDriverTests {
 
-    private val indexSteps by lazy { IndexPageSteps() }
-
     @Test
     fun elementVisibleTest() {
+        val indexSteps by lazy { IndexPageSteps() }
+
         indexSteps.open()
         indexSteps.inputShouldBePresent()
     }
 
     @Test
     fun sendKeysTest() {
+        val indexSteps by lazy { IndexPageSteps() }
         val value = "Search Value"
         indexSteps.open()
         indexSteps.setSearch(value)
