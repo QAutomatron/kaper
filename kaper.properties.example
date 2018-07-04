@@ -1,0 +1,2 @@
+driver.browserName=chrome
+driver.hub=http://localhost:4444/wd/hub
