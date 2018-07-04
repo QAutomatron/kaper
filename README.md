@@ -1,4 +1,4 @@
-# Kaper
+# Kaper [![Build Status](https://travis-ci.org/QAutomatron/kaper.svg?branch=master)](https://travis-ci.org/QAutomatron/kaper)
 
 Test automation framework for Selenium/Appium written in Kotlin
 
