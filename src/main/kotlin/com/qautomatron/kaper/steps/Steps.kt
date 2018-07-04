@@ -11,7 +11,7 @@ import org.openqa.selenium.WebDriver
 
 abstract class Steps(val driver: WebDriver = getDriver()) {
 
-    protected val js = driver as JavascriptExecutor
+    protected val js = driver as? JavascriptExecutor
 
     init {
         driver.resetImplicitTimeout()

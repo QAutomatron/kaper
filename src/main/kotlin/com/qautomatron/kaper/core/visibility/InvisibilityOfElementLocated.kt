@@ -3,6 +3,9 @@ package com.qautomatron.kaper.core.visibility
 import org.openqa.selenium.*
 import org.openqa.selenium.support.ui.ExpectedCondition
 
+/**
+ * Will check invisibility of element By locator
+ */
 class InvisibilityOfElementLocated(private val locator: By) : ExpectedCondition<Boolean> {
 
     override fun apply(driver: WebDriver?): Boolean? {

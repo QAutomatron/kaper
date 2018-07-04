@@ -22,6 +22,9 @@ import org.openqa.selenium.remote.RemoteWebDriver
 import java.net.URL
 import java.util.concurrent.ConcurrentHashMap
 
+/**
+ * Driver manager - will create, remove driver
+ */
 class DriverManager {
 
     private val container: MutableMap<Long, WebDriver> = ConcurrentHashMap(4)
@@ -47,11 +50,17 @@ class DriverManager {
         return setDriver(newDriver)
     }
 
+    /**
+     * Quit current driver and remove it from thread
+     */
     fun quitDriver() {
         container[Thread.currentThread().id]?.quit()
         container.remove(Thread.currentThread().id)
     }
 
+    /**
+     * Check if driver is exist
+     */
     fun isDriverExist(): Boolean {
         return container[Thread.currentThread().id] != null
     }
@@ -159,19 +168,31 @@ class DriverManager {
 val driverManager = DriverManager()
 private val logger = KotlinLogging.logger {}
 
+/**
+ * Get driver instance within project
+ */
 fun getDriver(): WebDriver {
     return driverManager.getDriver()
 }
 
+/**
+ * Close session within project
+ */
 fun closeSession() {
     logger.debug { "Will close session for thread ${Thread.currentThread().id}" }
     return driverManager.quitDriver()
 }
 
+/**
+ * Driver exist check alias
+ */
 fun isDriverExist(): Boolean {
     return driverManager.isDriverExist()
 }
 
+/**
+ * Get screenshot as bytes
+ */
 fun getScreenshot(): ByteArray {
     return (getDriver() as RemoteWebDriver).getScreenshotAs(OutputType.BYTES)
 }

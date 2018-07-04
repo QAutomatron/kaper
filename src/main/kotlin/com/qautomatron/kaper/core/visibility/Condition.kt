@@ -1,5 +1,8 @@
 package com.qautomatron.kaper.core.visibility
 
+/**
+ * Element condition list
+ */
 enum class Condition {
     VISIBLE, INVISIBLE, PRESENCE, ABSENCE
 }
