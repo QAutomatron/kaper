@@ -62,6 +62,9 @@ interface Configuration : Config {
     @Key("appium.appWaitActivity")
     fun appWaitActivity(): String?
 
+    @Key("appium.appWaitPackage")
+    fun appWaitPackage(): String?
+
     @Key("appium.xcodeOrgId")
     fun xcodeOrgId(): String?
 

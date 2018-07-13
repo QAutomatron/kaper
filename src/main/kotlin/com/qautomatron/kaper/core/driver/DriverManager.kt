@@ -155,10 +155,12 @@ class DriverManager {
 
     private fun getAndroidCapabilities(): DesiredCapabilities {
         val appWaitActivity = config.appWaitActivity()
+        val appWaitPackage = config.appWaitPackage()
         val noSign = config.noSign()
         val capabilities = DesiredCapabilities()
 
         if (!appWaitActivity.isNullOrEmpty()) capabilities.setCapability("appWaitActivity", appWaitActivity)
+        if (!appWaitPackage.isNullOrEmpty()) capabilities.setCapability("appWaitPackage", appWaitPackage)
         if (noSign != null) capabilities.setCapability("noSign", noSign)
 
         return capabilities
