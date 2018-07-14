@@ -3,7 +3,10 @@ package com.qautomatron.kaper.core.config
 import org.aeonbits.owner.Config
 import org.aeonbits.owner.Config.*
 
-@Sources("file:\${config.file}.properties",
+@LoadPolicy(LoadType.MERGE)
+@Sources(
+        "system:env",
+        "file:\${config.file}.properties",
         "file:kaper.properties")
 interface Configuration : Config {
 
