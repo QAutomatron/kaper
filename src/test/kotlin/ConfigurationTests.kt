@@ -1,5 +1,5 @@
 
-import assertk.assert
+import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isNull
 import com.qautomatron.kaper.core.common.config
@@ -9,21 +9,21 @@ class ConfigurationTests {
 
     @Test
     fun testDefaultIntValue() {
-        assert(config.implicitlyWait()).isEqualTo(0)
+        assertThat(config.implicitlyWait()).isEqualTo(0)
     }
 
     @Test
     fun testNullStringValue() {
-        assert(config.app()).isNull()
+        assertThat(config.app()).isNull()
     }
 
     @Test
     fun testStringValue() {
-        assert(config.browserName()).isEqualTo("chrome")
+        assertThat(config.browserName()).isEqualTo("chrome")
     }
 
     @Test
     fun testDefaultBooleanValue() {
-        assert(config.uSession()).isEqualTo(true)
+        assertThat(config.uSession()).isEqualTo(true)
     }
 }
