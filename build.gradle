@@ -38,7 +38,7 @@ dependencies {
     compile group: 'org.aeonbits.owner', name: 'owner', version: '1.0.10'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
     compile group: 'org.testng', name: 'testng', version: '6.14.3'
-    testCompile 'com.willowtreeapps.assertk:assertk:0.10'
+    testCompile 'com.willowtreeapps.assertk:assertk:0.18'
 }
 
 bintray {
