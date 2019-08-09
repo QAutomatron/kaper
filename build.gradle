@@ -34,7 +34,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile group: 'io.appium', name: 'java-client', version: '7.1.0'
-    compile 'io.github.microutils:kotlin-logging:1.7.1'
+    compile 'io.github.microutils:kotlin-logging:1.7.4'
     compile group: 'org.aeonbits.owner', name: 'owner', version: '1.0.10'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
     compile group: 'org.testng', name: 'testng', version: '6.14.3'
