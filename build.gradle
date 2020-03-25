@@ -2,7 +2,7 @@ buildscript {
 
     ext
             {
-                kotlin_version = '1.3.70'
+                kotlin_version = '1.3.71'
                 threads = project.hasProperty('threads') ? project.getProperty('threads').toInteger() : 1
             }
 
