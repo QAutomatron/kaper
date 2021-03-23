@@ -37,7 +37,7 @@ dependencies {
     compile 'io.github.microutils:kotlin-logging:1.12.0'
     compile group: 'org.aeonbits.owner', name: 'owner', version: '1.0.12'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.30'
-    compile group: 'org.testng', name: 'testng', version: '7.0.0'
+    compile group: 'org.testng', name: 'testng', version: '7.4.0'
     testCompile 'com.willowtreeapps.assertk:assertk:0.20'
 }
 
